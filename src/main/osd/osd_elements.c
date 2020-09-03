@@ -929,7 +929,7 @@ static void osdElementEfficiency(osdElementParms_t *element)
     int efficiency = 0;
     if (sensors(SENSOR_GPS) && ARMING_FLAG(ARMED) && STATE(GPS_FIX) && gpsSol.groundSpeed >= EFFICIENCY_MINIMUM_SPEED_CM_S) {
         const int speedX100 = osdGetSpeedToSelectedUnit(gpsSol.groundSpeed * 100); // speed * 100 for improved resolution at slow speeds
-
+        
         if (speedX100 > 0) {
             const int mAmperage = getAmperage() * 10; // Current in mA
             efficiency = mAmperage * 100 / speedX100; // mAmperage * 100 to cancel out speed * 100 from above
@@ -1303,7 +1303,6 @@ static void osdElementWarnings(osdElementParms_t *element)
 
             tfp_sprintf(element->buff, "%s", armingDisableFlagNames[armingDisabledDisplayIndex]);
             element->attr = DISPLAYPORT_ATTR_WARNING;
-            strcpy(pilotConfigMutable()->warnings,element->buff);
             return;
         } else {
             armingDisabledUpdateTimeUs = 0;
@@ -1322,7 +1321,6 @@ static void osdElementWarnings(osdElementParms_t *element)
             tfp_sprintf(element->buff, "ARM IN %d.%d", armingDelayTime / 10, armingDelayTime % 10);
         }
         element->attr = DISPLAYPORT_ATTR_INFO;
-        strcpy(pilotConfigMutable()->warnings,element->buff);
         return;
     }
 #endif // USE_DSHOT
@@ -1330,7 +1328,6 @@ static void osdElementWarnings(osdElementParms_t *element)
         tfp_sprintf(element->buff, "FAIL SAFE");
         element->attr = DISPLAYPORT_ATTR_CRITICAL;
         SET_BLINK(OSD_WARNINGS);
-        strcpy(pilotConfigMutable()->warnings,element->buff);
         return;
     }
 
@@ -1338,7 +1335,6 @@ static void osdElementWarnings(osdElementParms_t *element)
     if (osdWarnGetState(OSD_WARNING_CRASH_FLIP) && isFlipOverAfterCrashActive()) {
         tfp_sprintf(element->buff, "CRASH FLIP");
         element->attr = DISPLAYPORT_ATTR_INFO;
-        strcpy(pilotConfigMutable()->warnings,element->buff);
         return;
     }
 
@@ -1361,7 +1357,6 @@ static void osdElementWarnings(osdElementParms_t *element)
         }
 
         element->attr = DISPLAYPORT_ATTR_INFO;
-        strcpy(pilotConfigMutable()->warnings,element->buff);
         return;
     }
 #endif // USE_LAUNCH_CONTROL
@@ -1371,7 +1366,6 @@ static void osdElementWarnings(osdElementParms_t *element)
         tfp_sprintf(element->buff, "RSSI LOW");
         element->attr = DISPLAYPORT_ATTR_WARNING;
         SET_BLINK(OSD_WARNINGS);
-        strcpy(pilotConfigMutable()->warnings,element->buff);
         return;
     }
 #ifdef USE_RX_RSSI_DBM
@@ -1380,7 +1374,6 @@ static void osdElementWarnings(osdElementParms_t *element)
         tfp_sprintf(element->buff, "RSSI DBM");
         element->attr = DISPLAYPORT_ATTR_WARNING;
         SET_BLINK(OSD_WARNINGS);
-        strcpy(pilotConfigMutable()->warnings,element->buff);
         return;
     }
 #endif // USE_RX_RSSI_DBM
@@ -1391,7 +1384,6 @@ static void osdElementWarnings(osdElementParms_t *element)
         tfp_sprintf(element->buff, "LINK QUALITY");
         element->attr = DISPLAYPORT_ATTR_WARNING;
         SET_BLINK(OSD_WARNINGS);
-        strcpy(pilotConfigMutable()->warnings,element->buff);
         return;
     }
 #endif // USE_RX_LINK_QUALITY_INFO
@@ -1400,7 +1392,6 @@ static void osdElementWarnings(osdElementParms_t *element)
         tfp_sprintf(element->buff, " LAND NOW");
         element->attr = DISPLAYPORT_ATTR_CRITICAL;
         SET_BLINK(OSD_WARNINGS);
-        strcpy(pilotConfigMutable()->warnings,element->buff);
         return;
     }
 
@@ -1413,7 +1404,6 @@ static void osdElementWarnings(osdElementParms_t *element)
         tfp_sprintf(element->buff, "RESCUE N/A");
         element->attr = DISPLAYPORT_ATTR_WARNING;
         SET_BLINK(OSD_WARNINGS);
-        strcpy(pilotConfigMutable()->warnings,element->buff);
         return;
     }
 
@@ -1438,7 +1428,6 @@ static void osdElementWarnings(osdElementParms_t *element)
         tfp_sprintf(element->buff, "HEADFREE");
         element->attr = DISPLAYPORT_ATTR_WARNING;
         SET_BLINK(OSD_WARNINGS);
-        strcpy(pilotConfigMutable()->warnings,element->buff);
         return;
     }
 
@@ -1448,7 +1437,6 @@ static void osdElementWarnings(osdElementParms_t *element)
         tfp_sprintf(element->buff, "CORE %c: %3d%c", SYM_TEMPERATURE, osdConvertTemperatureToSelectedUnit(coreTemperature), osdGetTemperatureSymbolForSelectedUnit());
         element->attr = DISPLAYPORT_ATTR_WARNING;
         SET_BLINK(OSD_WARNINGS);
-        strcpy(pilotConfigMutable()->warnings,element->buff);
         return;
     }
 #endif // USE_ADC_INTERNAL
@@ -1510,7 +1498,6 @@ static void osdElementWarnings(osdElementParms_t *element)
         tfp_sprintf(element->buff, "LOW BATTERY");
         element->attr = DISPLAYPORT_ATTR_WARNING;
         SET_BLINK(OSD_WARNINGS);
-        strcpy(pilotConfigMutable()->warnings,element->buff);
         return;
     }
 
@@ -1520,7 +1507,6 @@ static void osdElementWarnings(osdElementParms_t *element)
         tfp_sprintf(element->buff, "RCSMOOTHING");
         element->attr = DISPLAYPORT_ATTR_WARNING;
         SET_BLINK(OSD_WARNINGS);
-        strcpy(pilotConfigMutable()->warnings,element->buff);
         return;
     }
 #endif // USE_RC_SMOOTHING_FILTER
@@ -1530,7 +1516,6 @@ static void osdElementWarnings(osdElementParms_t *element)
         tfp_sprintf(element->buff, "OVER CAP");
         element->attr = DISPLAYPORT_ATTR_WARNING;
         SET_BLINK(OSD_WARNINGS);
-        strcpy(pilotConfigMutable()->warnings,element->buff);
         return;
     }
 
@@ -1539,7 +1524,6 @@ static void osdElementWarnings(osdElementParms_t *element)
           && getBatteryAverageCellVoltage() < batteryConfig()->vbatfullcellvoltage) {
         tfp_sprintf(element->buff, "BATT < FULL");
         element->attr = DISPLAYPORT_ATTR_INFO;
-        strcpy(pilotConfigMutable()->warnings,element->buff);
         return;
     }
 
@@ -1547,11 +1531,9 @@ static void osdElementWarnings(osdElementParms_t *element)
     if (osdWarnGetState(OSD_WARNING_VISUAL_BEEPER) && osdGetVisualBeeperState()) {
         tfp_sprintf(element->buff, "  * * * *");
         element->attr = DISPLAYPORT_ATTR_INFO;
-        strcpy(pilotConfigMutable()->warnings,element->buff);
         return;
     }
-        //If not "conditions" are met, clear the warnings field for DJI.
-        strcpy(pilotConfigMutable()->warnings," ");
+
 }
 
 // Define the order in which the elements are drawn.

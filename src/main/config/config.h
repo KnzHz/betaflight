@@ -42,8 +42,6 @@ typedef enum {
 typedef struct pilotConfig_s {
     char name[MAX_NAME_LENGTH + 1];
     char displayName[MAX_NAME_LENGTH + 1];
-    char warnings[12];
-    uint8_t enableDJIWarning; // boolean that determines whether DJI Warnings replace Craftname
 } pilotConfig_t;
 
 PG_DECLARE(pilotConfig_t, pilotConfig);
